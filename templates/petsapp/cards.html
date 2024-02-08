@@ -1,0 +1,13 @@
+<div class="col-lg-3">
+    <div class="card" style="height:350px; cursor: pointer;">
+        <div class="card-body">
+            {% comment %}
+            {% endcomment %}
+            <a href="{% url 'pets:detail' slug=instance.slug %}">
+                <img height="200px" class="card-img-top" src="{{ instance.image.url}}">
+                <p class=" card-text">{{instance.description}}</p>
+                <p>Price<b>: $ {{instance.price}}</b></p>
+            </a>
+        </div>
+    </div>
+</div>

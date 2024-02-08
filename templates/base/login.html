@@ -1,0 +1,12 @@
+{% extends 'base/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h4 style="color: red;">{{msg}}</h4>
+    <form align='center' method="post">
+        {% csrf_token %}
+
+        {{form.as_p}}
+        <input type="submit" value="login" />
+    </form>
+{% endblock %}

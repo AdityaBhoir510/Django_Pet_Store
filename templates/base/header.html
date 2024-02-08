@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}
+        Pet Store
+        {% endblock title %}</title>
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- <link href="lib/flaticon/font/flaticon.css" rel="stylesheet"> -->
+    <!-- Libraries Stylesheet -->
+    <!-- <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet"> -->
+    <!-- <link rel="stylesheet" href="{%static 'css/style.css'%}"> -->
+    <link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+        crossorigin="anonymous"></script>
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <script src="{%static 'js/bootstrap.bundle.js'%}"></>
+    <script src="{%static 'js/bootstrap.min.js'%}"></> -->
+    <!--script src="{%static 'js/demo.js'%}"></script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Replace the "test" client-id value with your client-id -->
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=AeZ_-zip29Wk21llChXAvT0mYpC6TkigKIuPSg0mNKxq6dm2acrosRytHJuJiEXgnIxsA1327QCnX2yW&components=buttons&enable-funding=paylater,venmo,card" data-sdk-integration-source="integrationbuilder_sc"></script>     -->
+</head>
+
+<body class="container">
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow-sm py-3 py-lg-0 px-3 px-lg-0">
+        <a href="/petsapp/pets/" class="navbar-brand ms-lg-5">
+            <h1 class="m-0 text-uppercase text-dark"><i class="bi bi-shop fs-1 text-primary me-3"></i>Pet Shop</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a href="/petsapp/pets/" class="nav-item nav-link active d-flex align-items-center">Home</a>
+                {% comment %}
+                {% endcomment %}
+                <a href="{% url 'aboutus' %}" class="nav-item nav-link d-flex align-items-center">About</a>
+                <a href="{% url 'service' %}" class="nav-item nav-link d-flex align-items-center">Service</a>
+                <!-- <a href="product.html" class="nav-item nav-link d-flex align-items-center">Product</a> -->
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link" data-bs-toggle="dropdown"><button
+                            class="btn dropdown-toggle">Category</button></a>
+                    <div class="dropdown-menu m-0">
+                        <a href="{% url 'search:Doglist' %}" class="dropdown-item">Dog</a>
+                        <a href="{% url 'search:Catlist' %}" class="dropdown-item">Cat</a>
+                    </div>
+                </div>
+                <div>
+                    {% include 'search/searchForm.html' %}
+                </div>
+                <!-- Default dropstart button -->
+
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'cart:cartpage' %}" class="mx-3 nav-item nav-link d-flex align-items-center">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>CART</a>
+                {% endif %}
+                <div class="btn-group dropstart">
+                    <button type="button" class="btn btn-primary dropdown-toggle m-2" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Profile
+                    </button>
+                    <ul class="dropdown-menu">
+
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
+                        <a href="#" class="dropdown-item">Order History</a>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="dropdown-item">Login</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'register' %}" class="dropdown-item">Sign Up</a>
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- <a href="contact.html" class="nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5">Contact
+                    <i class="bi bi-arrow-right"></i></a> -->
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+</body>
+
+</html>

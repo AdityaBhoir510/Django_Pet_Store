@@ -1,0 +1,91 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{title}}{% endblock title %}
+
+{% block content %}
+
+{% if items %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Pet</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Price</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td><img src="{{item.pet.image.url}}" height="150px" width="150px">
+                <br>
+                <h4>{{item.pet.name}}</h4>
+            </td>
+            <td>{{item.pet.price}}</td>
+            <td>
+                <input type="number" name="quantity" min='0' value="{{item.quantity}}" data-item-id="{{item.id}}" />
+            </td>
+            <td>
+                <input type="text" value=" {{item.totalprice}}" readonly />
+            </td>
+            <td><a href="{% url 'cart:deleteitem' item.id %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<form action="{% url 'order:place_order' %}">
+    <b>Total Amount: </b><input type="text" name="totalamount" id="totalamount" value="{{totalamt}}" readonly />
+    <button type="submit">Place order</button>
+</form>
+<!-- 
+<script>
+    $(document).ready(function () {
+        $('.qnt').change(function () {
+            quantity = $(this).val()
+            price = $(this).parent().prev().html()
+            
+            id = $(this).attr('cartid')
+            // $("#totalprice"+id).val(totalprice)
+            $.ajax({
+                url: "/cart/updatecart/",
+                method: 'POST',
+                data: { 'qnt': quantity, 'price': price, 'cid': id, 'csrfmiddlewaretoken': '{{csrf_token}}' },
+                success: function (response) {
+                    $("#totalprice" + id).val(response.totalprice);
+                    $('#totalamount').val(response.totalam);
+                },
+                error: function () { }
+            })
+        })
+    })
+</script> -->
+<script>
+    $(document).ready(function () {
+        // Changed the selector to target the input fields by data-item-id attribute
+        $('input[name="quantity"]').change(function () {
+            var quantity = $(this).val();
+            var price = $(this).closest('tr').find('td:eq(1)').text(); // Find price from the same row
+
+            var id = $(this).data('item-id'); // Using data-item-id attribute
+            $.ajax({
+                url: "/cart/updatecart/",
+                method: 'POST',
+                data: { 'qnt': quantity, 'price': price, 'cid': id, 'csrfmiddlewaretoken': '{{csrf_token}}' },
+                success: function (response) {
+                    // Assuming response.totalprice and response.totalam are correct
+                    // Update the total price and total amount fields based on the response
+                    $("input[data-item-id='" + id + "']").closest('tr').find('td:eq(3) input').val(response.totalprice); // Update total price
+                    $('#totalamount').val(response.totalam); // Update total amount
+                },
+                error: function () { }
+            });
+        });
+    });
+</script>
+{% else %}
+ <h1 align="center">No items in cart</h1>
+{% endif %}
+
+{% endblock content %}
